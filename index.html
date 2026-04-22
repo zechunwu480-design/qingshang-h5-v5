@@ -176,7 +176,10 @@ html,body{height:100%;margin:0;padding:0}
     .delay-3 { transition-delay: 0.3s; }
     .delay-4 { transition-delay: 0.4s; }
     .delay-5 { transition-delay: 0.5s; }
-.gold-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; pointer-events: none; }</style>
+.gold-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; pointer-events: none; -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); }
+    .swiper { width: 100%; height: 100vh; -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); }
+    .swiper-wrapper { -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); }
+    .swiper-slide { width: 100%; height: 100vh; -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); }</style>
 </head>
 <body><div class="gold-frame"></div>
   <div class="swiper">
@@ -546,8 +549,24 @@ var Swiper=function(){"use strict";function e(e){return null!==e&&"object"==type
     })();
 
     var swiper;
+
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('submitted') === 'true') {
+        document.getElementById('formSuccess').style.display = 'block';
+        document.querySelector('.form-title').style.display = 'none';
+        document.querySelector('.form-sub').style.display = 'none';
+        document.querySelectorAll('.form-group').forEach(function(g){ g.style.display = 'none'; });
+        document.getElementById('submitBtn').style.display = 'none';
+        document.querySelector('.form-note').style.display = 'none';
+        setTimeout(function() {
+          var slides = document.querySelectorAll('.swiper-slide');
+          slides.forEach(function(s, i) { if (s.id === 'form') swiper.slideTo(i); });
+        }, 100);
+      }
+    })();
+
     swiper = new Swiper('.swiper', {
-      direction: 'vertical',
       pagination: { el: '.swiper-pagination', clickable: true },
       on: {
         slideChange: function() {
