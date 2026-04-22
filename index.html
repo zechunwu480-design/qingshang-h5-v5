@@ -27,8 +27,8 @@ html,body{height:100%;margin:0;padding:0}
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; overflow: hidden; font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif, sans-serif; }
     body { background: #FAFAF8; color: #1a1a1a; }
-    .swiper { width: 100%; height: 100%; }
-    .swiper-slide { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 32px; position: relative; overflow: hidden; }
+    .swiper { width: 100%; height: 100vh; position: relative; }
+    .swiper-slide { width: 100%; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 32px; position: relative; }
 
     /* Light background with subtle gold warmth */
     .bg-light { position: absolute; inset: 0; z-index: 0; }
@@ -175,7 +175,6 @@ html,body{height:100%;margin:0;padding:0}
     .delay-3 { transition-delay: 0.3s; }
     .delay-4 { transition-delay: 0.4s; }
     .delay-5 { transition-delay: 0.5s; }
-.gold-frame{position:fixed;inset:0;z-index:9999;pointer-events:none;border:3px solid transparent;border-image:linear-gradient(135deg,#D4AF37,#B8860B,#FFD700,#D4AF37,#D4AF37) 1;box-shadow:0 0 40px rgba(212,175,55,.2),inset 0 0 80px rgba(212,175,55,.05);border-radius:0}</style>
 </head>
 <body><div class="gold-frame"></div>
   <div class="swiper">
@@ -545,6 +544,22 @@ var Swiper=function(){"use strict";function e(e){return null!==e&&"object"==type
     })();
 
     var swiper;
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('submitted') === 'true') {
+        document.getElementById('formSuccess').style.display = 'block';
+        document.querySelector('.form-title').style.display = 'none';
+        document.querySelector('.form-sub').style.display = 'none';
+        document.querySelectorAll('.form-group').forEach(function(g){ g.style.display = 'none'; });
+        document.getElementById('submitBtn').style.display = 'none';
+        document.querySelector('.form-note').style.display = 'none';
+        setTimeout(function() {
+          var slides = document.querySelectorAll('.swiper-slide');
+          slides.forEach(function(s, i) { if (s.id === 'form') swiper.slideTo(i); });
+        }, 100);
+      }
+    })();
+
     swiper = new Swiper('.swiper', {
       direction: 'vertical',
       pagination: { el: '.swiper-pagination', clickable: true },
